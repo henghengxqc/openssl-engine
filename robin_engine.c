@@ -11,15 +11,14 @@ static const char *engine_name = "Robin engine";
 static int robin_engine_init(ENGINE *e)
 {
     printf ("%s: %s\n", engine_name, __FUNCTION__);
-
-	return 1;
+    
+    return 1;
 }
 
 static int robin_engine_finish(ENGINE *e)
 {
     printf ("%s: %s\n", engine_name, __FUNCTION__);
-
-	return 1;
+    return 1;
 }
 
 static int robin_engine_ctrl(ENGINE *e, int cmd, long i, void *p, void(*f) ()) 
@@ -29,7 +28,7 @@ static int robin_engine_ctrl(ENGINE *e, int cmd, long i, void *p, void(*f) ())
         default:
         break;
     }
-    return 0;
+    return 1;
 }
 
 static int robin_engine_bind(ENGINE *e, const char *id)
@@ -37,6 +36,7 @@ static int robin_engine_bind(ENGINE *e, const char *id)
     printf ("Loading %s.\n", engine_name);
 
     if (!ENGINE_set_id(e, engine_id)) {
+        printf("ENGINE_set_id failed\n");
         goto end;
 	}
 	if (!ENGINE_set_name(e, engine_name)) {
@@ -53,10 +53,10 @@ static int robin_engine_bind(ENGINE *e, const char *id)
 		goto end;
 	}
     
-    return 0;
+    return 1;
 
 end:
-    return 1;
+    return 0;
 }
 
 IMPLEMENT_DYNAMIC_CHECK_FN();
