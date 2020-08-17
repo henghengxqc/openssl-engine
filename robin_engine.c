@@ -12,14 +12,14 @@ static int robin_engine_init(ENGINE *e)
 {
     printf ("%s: %s\n", engine_name, __FUNCTION__);
 
-	return 0;
+	return 1;
 }
 
 static int robin_engine_finish(ENGINE *e)
 {
     printf ("%s: %s\n", engine_name, __FUNCTION__);
 
-	return 0;
+	return 1;
 }
 
 static int robin_engine_ctrl(ENGINE *e, int cmd, long i, void *p, void(*f) ()) 
