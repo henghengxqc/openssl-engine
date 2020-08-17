@@ -2,10 +2,10 @@ CFLAGS= -Wall -W  -g -fPIC -I./ -I./include -I/home/wangheng/openssl-1.1.1b/incl
 LDFLAGS= -L /home/wangheng/openssl-1.1.1b/install/usr/local/ssl/lib -lcrypto -lssl
 CC=gcc
 
-OBJS= robinengine.o
+OBJS= robin_engine.o
 
-LIBNAME=robinengine.so
-LIB=robinengine.so
+LIBNAME=robin_engine.so
+LIB=robin_engine.so
 
 .SUFFIXES: .c
 

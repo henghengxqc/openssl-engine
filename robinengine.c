@@ -5,26 +5,58 @@
 #include <openssl/objects.h>
 #include <openssl/engine.h>
 
+static const char *engine_id = "robin_engine";
+static const char *engine_name = "Robin engine";
+
+static int robin_engine_init(ENGINE *e)
+{
+    printf ("%s: %s\n", engine_name, __FUNCTION__);
+
+	return 0;
+}
+
+static int robin_engine_finish(ENGINE *e)
+{
+    printf ("%s: %s\n", engine_name, __FUNCTION__);
+
+	return 0;
+}
+
 static int robin_engine_ctrl(ENGINE *e, int cmd, long i, void *p, void(*f) ()) 
 {
-    printf("Currently: do nothing ;)\n");
+    printf ("%s: %s\n", engine_name, __FUNCTION__);
     switch (cmd) {
         default:
-                break;
+        break;
     }
     return 0;
 }
 
 static int robin_engine_bind(ENGINE *e, const char *id)
 {
-    printf ("Loading robin engine!\n");
-    if (!ENGINE_set_id(e, "robinEngine") ||
-        !ENGINE_set_name(e, "robin engine")) {
-        return 0;
-    }
-    else {
-        return 1;
-    }
+    printf ("Loading %s.\n", engine_name);
+
+    if (!ENGINE_set_id(e, engine_id)) {
+        goto end;
+	}
+	if (!ENGINE_set_name(e, engine_name)) {
+        printf("ENGINE_set_name failed\n");
+        goto end;
+	}
+
+    if (!ENGINE_set_init_function(e, robin_engine_init)) {
+		printf("ENGINE_set_init_function failed\n");
+		goto end;
+	}
+	if (!ENGINE_set_finish_function(e, robin_engine_finish)) {
+		printf("ENGINE_set_finish_function failed\n");
+		goto end;
+	}
+    
+    return 0;
+
+end:
+    return 1;
 }
 
 IMPLEMENT_DYNAMIC_CHECK_FN();
