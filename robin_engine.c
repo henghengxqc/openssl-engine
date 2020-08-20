@@ -31,6 +31,19 @@ static int robin_engine_ctrl(ENGINE *e, int cmd, long i, void *p, void(*f) ())
     return 1;
 }
 
+static int robin_engine_rand_bytes (unsigned char *buf, int num){
+    printf ("%s: %s: fake rand, output 'A' \n", engine_name, __FUNCTION__);
+
+    if (!buf)
+        return 0;
+
+    memset ((void *) buf, (int) 'A', num);
+
+    return 1;
+}
+
+static const RAND_METHOD robin_engine_rand = {.bytes = robin_engine_rand_bytes};
+
 static int robin_engine_bind(ENGINE *e, const char *id)
 {
     printf ("Loading %s.\n", engine_name);
@@ -50,6 +63,11 @@ static int robin_engine_bind(ENGINE *e, const char *id)
 	}
 	if (!ENGINE_set_finish_function(e, robin_engine_finish)) {
 		printf("ENGINE_set_finish_function failed\n");
+		goto end;
+	}
+
+    if (!ENGINE_set_RAND(e, &robin_engine_rand)) {
+		printf("ENGINE_set_default_RAND failed\n");
 		goto end;
 	}
     
